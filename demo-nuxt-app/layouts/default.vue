@@ -13,14 +13,13 @@
                 <div class="flex gap-4 items-center relative">
                 <div class="relative">
                     <!-- Cart Badge -->
-                    <span class="bg-[#42b883] text-white rounded-full px-2 py-1 text-xs absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2">0</span>
-                    
+                    <span class="bg-[#42b883] text-white rounded-full px-2 py-1 text-xs absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2"
+                    >{{ cartStore.cartItemCount }}</span>
                     <!-- Cart Icon -->
                     <NuxtLink to="/cart" class="flex items-center text-2xl text-[#42b883]">
                     <Icon name="bi:bag-plus" class="hover:text-[#26674a]" />
                     </NuxtLink>
                 </div>
-                
                 <!-- Login Button -->
                 <NuxtLink to="/login" class="btn">
                     Login
@@ -29,14 +28,22 @@
 
             </nav>
         </header>
-        <div class=" container mx-auto p-4 items-center">
+        <div class="container mx-auto p-4 items-center">
             <slot/>
         </div>
     </div>
 </template>
 
 <script setup>
+import { onMounted } from 'vue';
+import { useCartStore } from '~/stores/cartStore';
 
+const cartStore = useCartStore();
+
+onMounted(() => {
+  // Load the cart data from localStorage when the component is mounted
+  cartStore.getCartDataFromLocalStorage();
+});
 </script>
 
 <style scoped>

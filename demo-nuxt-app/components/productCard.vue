@@ -1,7 +1,9 @@
 <template >
-    <NuxtLink :key="product.id" :to="`/products/${ product.id }`"class="product-card">
+    <div :key="product.id" class="product-card">
         <!-- Product Title and Image -->
-        <img :src="product.image" alt="product-thumb" class="thumb self-center">
+    <NuxtLink :to="`/products/${ product.id }`" class="flex items-center justify-center">
+        <img :src="product.image" alt="product-thumb" class="thumb cursor-pointer">
+    </NuxtLink>
         <p class="text-bold text-lg text-green-600"> {{ product.title.length >27 ? product.title.slice(0, 27) + '...' : product.title }}</p>
          <!-- Rating Section -->
          <div class="flex items-center my-2">
@@ -21,33 +23,20 @@
             </div>
             <!-- Product Price and Details Button -->
         <div class="flex justify-between items-center">
-            <p class=""><span class="font-bold">Price:</span> {{ product.price }} $</p>
-            <NuxtLink to="/cart" class="cart-btn flex items-center space-x-1"  @click = "handleAddToCart(product.id)">
+            <p><span class="font-bold">Price:</span> {{ product.price }} $</p>
+            <NuxtLink class="cart-btn flex items-center space-x-1 cursor-pointer" @click = "cartStore.addToCart(product.id)">
                     <Icon name="carbon:shopping-cart" class="w-5 h-5"/>
                     <span>Add to cart</span>
             </NuxtLink>
         </div>
-    </NuxtLink>
+    </div>
 </template>
 
 <script setup>
-import {addToDb} from '../composable/addToCart';
-
 const {product} = defineProps(['product']);
-const handleAddToCart = (id)=>{
-    addToDb(id);
 
-//     try {
-//         const res = await $fetch('/api/test', {
-//     method: 'POST',
-//     body: {
-//         id,
-//     }
-//   })
-//     } catch (error) {
-//         console.error('Error fetching products:', error);
-//     }
-}
+import { useCartStore } from '~/stores/cartStore';
+const cartStore = useCartStore();
 
 </script>
 
